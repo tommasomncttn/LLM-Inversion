@@ -4,3 +4,4 @@ torch==2.7.0
 accelerate==1.6.0
 bitsandbytes==0.42.0
 dotenv==0.9.9
+nnsight==0.4.6

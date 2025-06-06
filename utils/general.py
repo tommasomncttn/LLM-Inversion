@@ -58,7 +58,8 @@ def compute_last_token_embedding_grad(
     y: torch.LongTensor,
     llm: torch.nn.Module,
     layer_idx: int,
-    h_target: torch.Tensor
+    h_target: torch.Tensor,
+    tokenizer: Optional[torch.nn.Module],
 ):
     device = next(llm.parameters()).device
     y = y.to(device)

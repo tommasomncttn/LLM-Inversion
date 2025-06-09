@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 
 import torch
-from typing import Optional
+from typing import Optional, Tuple
 
 def get_whole(
     prompt: str,
@@ -131,3 +131,101 @@ def compute_all_token_embeddings_grad(
     emb_layer.zero_grad()
 
     return grad_sequence, loss.item()
+
+
+def get_whole_embeddings(
+    embeddings: torch.Tensor,
+    llm: torch.nn.Module,
+    layer_idx: int,
+    grad: bool = False
+) -> torch.Tensor:
+    """
+    Tokenize `prompt`, do a forward pass with output_hidden_states=True,
+    and return the hidden vector of the *last* token at layer `layer_idx`.
+
+    Args:
+        prompt (str): the input string, e.g. "Harry".
+        llm (nn.Module): a HuggingFace‐style model (with embeddings + hidden_states).
+        tokenizer: the corresponding tokenizer for `llm`.
+        layer_idx (int): which hidden‐layer index to extract (0=embeddings, 1=first block, etc.)
+
+    Returns:
+        Tensor of shape (hidden_size,) = the last‐token hidden state at `layer_idx`,
+        computed under torch.no_grad().
+    """
+    # 1) Tokenize (and move to same device as the model).
+    device = next(llm.parameters()).device
+    
+    if not grad:
+        # Forward under no_grad and detach before returning
+        with torch.no_grad():
+            outputs = llm(
+                inputs_embeds=embeddings,
+                output_hidden_states=True
+            )
+            hidden_states = outputs.hidden_states
+            h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
+
+        return h.detach()
+    else:
+        # Forward normally, so gradients can flow
+        outputs = llm(
+            inputs_embeds=embeddings,
+            output_hidden_states=True
+        )
+        hidden_states = outputs.hidden_states
+        h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
+        return h
+
+def compute_last_token_embedding_grad_emb(
+    embeddings: torch.Tensor,
+    llm: torch.nn.Module,
+    layer_idx: int,
+    h_target: torch.Tensor,
+) -> Tuple[torch.Tensor, float]:
+    """
+    Given a batch of precomputed token embeddings, run a forward pass
+    up to `layer_idx`, compute the MSE loss against `h_target` for the last token,
+    and return the gradient w.r.t. that last-token embedding plus the loss value.
+
+    Gradients are computed only for the last embedding row; the others are treated as constants.
+
+    Args:
+        embeddings:  Tensor of shape (1, seq_len, hidden_size)
+        llm:         A HuggingFace-style model supporting inputs_embeds + hidden_states.
+        layer_idx:   Index of the hidden layer to extract (0=embeddings, 1=first block, ...).
+        h_target:    Tensor of shape (hidden_size,) giving the desired hidden state for the last token.
+
+    Returns:
+        grad_last_embedding: Tensor of shape (hidden_size,) = d(loss)/d(embeddings[0,-1,:]).
+        loss_val:            Scalar float = loss.item().
+    """
+    # Move to device
+    device = next(llm.parameters()).device
+    embeddings = embeddings.to(device)
+    h_target = h_target.to(device)
+
+    # Split out the last-token embedding as a separate tensor requiring grad
+    fixed_embs = embeddings.clone().detach()
+    last_emb = fixed_embs[:, -1:, :].clone().requires_grad_(True)
+
+    # Reassemble inputs_embeds with fixed prefixes and grad-enabled last
+    inputs_embeds = torch.cat([fixed_embs[:, :-1, :], last_emb], dim=1)
+
+    # Forward pass from custom embeddings
+    outputs = llm(
+        inputs_embeds=inputs_embeds,
+        output_hidden_states=True
+    )
+    hidden_states = outputs.hidden_states
+    h_last = hidden_states[layer_idx][0, -1, :]
+
+    # Compute MSE loss for last token
+    loss = torch.nn.functional.mse_loss(h_last, h_target, reduction='sum')
+
+    # Compute gradient only w.r.t. last_emb
+    grad_last = torch.autograd.grad(loss, last_emb)[0]  # shape (1,1,hidden_size)
+    # print(grad_last)
+    grad_last_embedding = grad_last[0, 0, :].detach().clone().requires_grad_(False)
+
+    return grad_last_embedding, loss.item()

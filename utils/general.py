@@ -226,9 +226,13 @@ def compute_last_token_embedding_grad_emb(
     loss = torch.nn.functional.mse_loss(h_last, h_target, reduction='sum')
 
     # Compute gradient only w.r.t. last_emb
-    grad_last = torch.autograd.grad(loss, last_emb)[0]  # shape (1,1,hidden_size)
-    grad_last_embedding = grad_last[0, 0, :].detach().clone().requires_grad_(False)
-    return grad_last_embedding, loss.item()
+    
+    loss.backward()
+    return last_emb.grad.squeeze(0, 1), loss
+
+    # grad_last = torch.autograd.grad(loss, last_emb)[0]  # shape (1,1,hidden_size)
+    # grad_last_embedding = grad_last[0, 0, :].detach().clone().requires_grad_(False)
+    # return grad_last_embedding, loss
 
 
 def set_seed(seed: int = 8):
@@ -244,3 +248,25 @@ def set_seed(seed: int = 8):
     # Ensure deterministic behavior in cuDNN (may impact performance)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
+import sys
+import importlib
+import os
+from os.path import splitext, basename, dirname, isfile
+
+def load_module(module_reference, name):
+    # Check if it's a file path to a .py file
+    if isfile(module_reference) and module_reference.endswith('.py'):
+        mod_name = splitext(basename(module_reference))[0]
+        mod_path = dirname(os.path.abspath(module_reference))
+        sys.path.insert(0, mod_path)
+        module = __import__(mod_name)
+    else:
+        # Assume it's an installed module
+        module = importlib.import_module(module_reference)
+
+    return getattr(module, name)
+
+def load_model(src, cls, args=None):
+    model = load_module(src, cls)
+    return model(**args) if args else model()

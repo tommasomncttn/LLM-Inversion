@@ -1,3 +1,5 @@
+import random
+import numpy as np
 import torch
 import torch.nn.functional as F
 
@@ -229,3 +231,18 @@ def compute_last_token_embedding_grad_emb(
     grad_last_embedding = grad_last[0, 0, :].detach().clone().requires_grad_(False)
 
     return grad_last_embedding, loss.item()
+
+
+def set_seed(seed: int = 8):
+    """Set seed for reproducibility."""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)  # if using multi-GPU
+
+    # Ensure deterministic behavior in cuDNN (may impact performance)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False

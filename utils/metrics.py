@@ -10,12 +10,24 @@ def _add_metric_result(metric_dict, metric_name, value):
         metric_dict[metric_name] = []
     metric_dict[metric_name].append(value)
 
-def _compute_average_metric(metric_dict, metric_name):
-    if metric_name in metric_dict and len(metric_dict[metric_name]) > 0:
-        return np.nanmean(metric_dict[metric_name])
-    return 0.0
+def _agg_metric(metric_dict, metric_name):
+    """
+    Aggregate metric values from the metric dictionary.
+    Args:
+        metric_dict (dict): Dictionary containing metric values.
+        metric_name (str): Name of the metric to aggregate.
+    Returns:
+        tuple: mean and std 
+    """
+    if metric_name not in metric_dict:
+        raise ValueError(f"Metric '{metric_name}' not found in metric_dict.")
+    res = (
+        np.mean(metric_dict[metric_name], axis=1),
+        np.std(metric_dict[metric_name], axis=1)
+    )
+    return res
 
-def compute_metrics(target_sentences, output_sentences, output_embeddings, len_treshold=3,
+def compute_metrics(target_sentences, sentense_embeddings, output_sentences, output_embeddings, len_treshold=3,
     rouge = Rouge(),
     bert_scorer = BERTScorer(lang='en', rescale_with_baseline=True),
 ):
@@ -50,7 +62,10 @@ def compute_metrics(target_sentences, output_sentences, output_embeddings, len_t
             print(len(output_sentences[i]), len(target_sentences[i]))
             rouge_s = {'rouge-l': {'f': 0.0, 'p': 0.0, 'r': 0.0}}
         _add_metric_result(metrics, 'rouge-l_f', rouge_s['rouge-l']['f'])
-    for metric in metrics:
-        metrics[metric] = _compute_average_metric(metrics, metric)
+        # add l2 distance between output and target embeddings
+        _add_metric_result(metrics, 'l2_distance', np.linalg.norm(
+            sentense_embeddings[i] - output_embeddings[i]
+        ))
+        
     return metrics
     

@@ -227,9 +227,7 @@ def compute_last_token_embedding_grad_emb(
 
     # Compute gradient only w.r.t. last_emb
     grad_last = torch.autograd.grad(loss, last_emb)[0]  # shape (1,1,hidden_size)
-    # print(grad_last)
     grad_last_embedding = grad_last[0, 0, :].detach().clone().requires_grad_(False)
-
     return grad_last_embedding, loss.item()
 
 

@@ -4,12 +4,14 @@ os.environ['TOKENIZERS_PARALLELISM'] = 'false'
 import sys
 sys.path.append(os.getcwd())
 
+from pathlib import Path
 import argparse
 from time import time
 from tqdm import tqdm
 
 from itertools import product
 import pandas as pd
+import numpy as np
 
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -37,6 +39,11 @@ def parse_args():
         '--seed', 
         type=int, default=8,
         help='Random seed to use.'
+    )
+    parser.add_argument(
+        '-n', '--max-prompts', 
+        type=int, default=2,
+        help='Maximum amount of prompts to use.'
     )
     parser.add_argument(
         '--id', '--model-id',
@@ -82,7 +89,7 @@ def parse_args():
 def find_token(
     token_idx,
     embedding_matrix,
-    discovered_embeddings, discovered_ids,
+    discovered_embeddings,
     llm, layer_idx, h_target,
     optimizer_cls, lr,
     scheduler: bool = False
@@ -104,7 +111,8 @@ def find_token(
         desc=initial_desc,
         bar_format='{desc} {elapsed}<{remaining} {rate_fmt} {percentage:3.0f}% |{bar}| {elapsed} | {postfix} ',
     )
-
+    
+    final_timestep = embedding_matrix.size(0)
     for i in bar:
         bar.set_description(desc=f'{initial_desc}[{i + 1:5d}/{embedding_matrix.size(0):5d}]')
         input_embeddings = torch.stack(
@@ -126,6 +134,7 @@ def find_token(
         bar.set_postfix_str(f'\b\b  Loss: {loss.item():.2e} - Gradient norm: {grad_norm:.2e} - Token: {curr_token:15s}')
 
         if loss.item() < 1e-5 or grad_norm < 1e-12:
+            final_timestep = i + 1
             break
 
         embedding.grad = grad_oracle
@@ -138,7 +147,7 @@ def find_token(
         token_id = int(torch.argmin(distances))
         temp_embedding = copy_embedding_matrix[token_id].clone()
 
-    return token_id, copy_embedding_matrix[token_id]
+    return token_id, copy_embedding_matrix[token_id], final_timestep
 
 
 def find_prompt(
@@ -152,27 +161,29 @@ def find_prompt(
 
     discovered_embeddings = []
     discovered_ids        = []
+    timesteps             = []
 
     start_time = time()
     for i in range(h_target.size(0)):
-        next_token_id, next_token_embedding = find_token(
+        next_token_id, next_token_embedding, final_timestep = find_token(
             i, embedding_matrix, 
-            discovered_embeddings, discovered_ids, 
+            discovered_embeddings, 
             llm, layer_idx, h_target,
             optimizer_cls, lr, scheduler
         )
 
         if next_token_embedding is None:
-            return None, None
+            return None, None, None
 
         discovered_embeddings.append(next_token_embedding)
         discovered_ids.append(next_token_id)
+        timesteps.append(final_timestep)
 
     end_time = time()
 
     final_string = tokenizer.decode(discovered_ids, skip_special_tokens=True)
 
-    return end_time - start_time, final_string
+    return end_time - start_time, final_string, timesteps
 
 
 def inversion_attack(
@@ -184,20 +195,21 @@ def inversion_attack(
     set_seed(seed)
     h_target = get_whole(prompt, model, tokenizer, layer_idx)
 
-    invertion_time, predicted_prompt = find_prompt(
+    invertion_time, predicted_prompt, timesteps = find_prompt(
         llm, layer_idx, h_target, 
         optimizer_cls, lr, scheduler
     )
 
     if predicted_prompt is None:
         print('Inversion failed or diverged with the given parameters.')
-        return False, invertion_time
+        return False, invertion_time, None
 
     match = prompt == predicted_prompt
     print(f'Original {"==" if match else "!="} Reconstructed')
     print(f'Invertion time: {invertion_time:.2f} seconds')
+    print(f'Average Timesteps: {np.mean(timesteps):.2f}')
 
-    return match, invertion_time
+    return match, invertion_time, timesteps
 
 
 if __name__ == '__main__':
@@ -210,9 +222,10 @@ if __name__ == '__main__':
     model_id = args.id
     load_in_8bit = args.quantize
 
-    input_path = args.input
+    input_path = Path(args.input)
     output_path = args.output
     seed = args.seed
+    n = args.max_prompts
     
     learning_rates = args.learning_rates
     scheduler = args.scheduler
@@ -238,6 +251,7 @@ if __name__ == '__main__':
 
 
     df = pd.read_csv(input_path)
+    df = df.head(min(n, len(df)))
     df.columns = df.columns.astype(int)
 
     grid = list(product(
@@ -247,46 +261,53 @@ if __name__ == '__main__':
         layers
     ))
 
+    write_header = True
     results = []
-
     for lr, (opt_name, opt_class), token_length, layer in grid:
         for idx, prompt in enumerate(df[token_length].values):
             print(f'\nPrompt #{idx + 1:3d} | Layer: {layer} | LR: {lr:.2e} | Optimizer: {opt_name} | Length: {token_length:2d}')
 
-            try:
-                match, time_taken = inversion_attack(
-                    prompt, model, layer,
-                    opt_class, lr, seed, scheduler
-                )
+            match, time_taken, timesteps = inversion_attack(
+                prompt, model, layer,
+                opt_class, lr, seed, scheduler
+            )
 
-                results.append({
-                    'index': idx,
-                    # 'prompt': prompt,
-                    'layer': layer,
-                    'learning_rate': lr,
-                    'optimizer': opt_name,
-                    'token_length': token_length,
-                    'match': match,
-                    'inversion_time': time_taken
+            row = {
+                'dataset': input_path.name,
+                'index': idx,
+                'layer': layer,
+                'learning_rate': lr,
+                'optimizer': opt_name,
+                'token_length': token_length,
+                'match': match,
+            }
+
+            if match:
+                row.update({
+                    'inversion_time': time_taken,
+                    'timesteps': '_'.join([str(x) for x in timesteps]),
                 })
-
-            except Exception as e:
-                print(f'Error on prompt #{idx}: {e}')
-                results.append({
-                    'index': idx,
-                    # 'prompt': prompt,
-                    'layer': layer,
-                    'learning_rate': lr,
-                    'optimizer': opt_name,
-                    'token_length': token_length,
-                    'match': False,
+            else:
+                row.update({
                     'inversion_time': -1,
-                    'error': str(e)
+                    'timesteps': '',
                 })
+
+            results.append(row)
+
+        partial_df = pd.DataFrame(results)
+        partial_df.to_csv(
+            output_path,
+            mode='w' if write_header else 'a',
+            header=write_header,
+            index=False
+        )
+        results = []
+        write_header = False
+
 
     # Save results to CSV
-    results_df = pd.DataFrame(results)
-    results_df.to_csv(output_path, index=False)
+    results_df = pd.read_csv(output_path)
     print(f"\nAll results saved to {output_path}")
 
     # Filter matched rows

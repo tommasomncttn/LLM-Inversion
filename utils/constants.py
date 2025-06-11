@@ -5,3 +5,5 @@ COLORS = [
     "#2B9EB3",
     "#210B2C",
 ]
+
+RESULTS_PATH = "results"

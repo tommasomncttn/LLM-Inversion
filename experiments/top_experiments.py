@@ -237,7 +237,7 @@ if __name__ == '__main__':
     tokenizer.pad_token = tokenizer.eos_token
 
 
-    df = pd.read_csv(input_path)[:10]
+    df = pd.read_csv(input_path)
     df.columns = df.columns.astype(int)
 
     grid = list(product(

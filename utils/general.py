@@ -155,8 +155,6 @@ def get_whole_embeddings(
         Tensor of shape (hidden_size,) = the last‐token hidden state at `layer_idx`,
         computed under torch.no_grad().
     """
-    # 1) Tokenize (and move to same device as the model).
-    device = next(llm.parameters()).device
     
     if not grad:
         # Forward under no_grad and detach before returning

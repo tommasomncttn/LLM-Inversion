@@ -20,7 +20,7 @@ import transformers
 transformers.logging.set_verbosity_error()
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-from utils.general import compute_last_token_embedding_grad_emb, get_whole, set_seed, load_module
+from utils.general import compute_last_token_embedding_grad_emb, get_whole, set_seed, load_module, get_whole_embeddings
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Run inversion attack with given configuration.')
@@ -66,6 +66,11 @@ def parse_args():
         help='Flag for whether to employ a ReduceOnPlateu LR Scheduler'
     )
     parser.add_argument(
+        '--baseline',
+        action='store_true',
+        help='Flag for whether to use the random search algorithm'
+    )
+    parser.add_argument(
         '--optimizers', 
         type=str, nargs='+', default=['SGD', 'Adam', 'AdamW', 'RMSprop', 'LBFGS'],
         help='List of torch optimizer names to use. Example: --optimizers SGD AdamW'
@@ -85,6 +90,12 @@ def parse_args():
     return parser.parse_args()
 
 
+class ExhaustiveOptimizer:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def step(self, *args, **kwargs):
+        pass
 
 def find_token(
     token_idx,
@@ -92,7 +103,8 @@ def find_token(
     discovered_embeddings,
     llm, layer_idx, h_target,
     optimizer_cls, lr,
-    scheduler: bool = False
+    scheduler: bool = False,
+    baseline: bool = False
 ):
     copy_embedding_matrix = embedding_matrix.clone().detach().requires_grad_(False)
 
@@ -101,7 +113,7 @@ def find_token(
     embedding = copy_embedding_matrix[token_id].clone().requires_grad_(True)
     temp_embedding = copy_embedding_matrix[token_id].clone().detach()
 
-    optimizer = optimizer_cls([embedding], lr=lr)
+    optimizer = optimizer_cls([embedding], lr=lr) if not baseline else ExhaustiveOptimizer()
     if scheduler:
         scheduler = ReduceLROnPlateau(optimizer, 'min', factor=0.99, threshold=lr / 100, patience=200)
 
@@ -119,21 +131,27 @@ def find_token(
             discovered_embeddings + [temp_embedding]
         ).unsqueeze(0) 
 
-        grad_oracle, loss = compute_last_token_embedding_grad_emb(
-            embeddings=input_embeddings, 
-            llm=llm,
-            layer_idx=layer_idx,
-            h_target=h_target[token_idx],
-        )
+        grad_oracle = loss = torch.zeros_like(h_target[token_idx])
+
+        if baseline:
+            h_pred = get_whole_embeddings(input_embeddings, llm, layer_idx, grad=False)
+            loss = torch.nn.functional.mse_loss(h_pred[-1], h_target[token_idx], reduction='sum')
+        else:
+            grad_oracle, loss = compute_last_token_embedding_grad_emb(
+                embeddings=input_embeddings, 
+                llm=llm,
+                layer_idx=layer_idx,
+                h_target=h_target[token_idx],
+            )
 
         if torch.isnan(loss) or torch.isnan(grad_oracle).any():
-            return None, None
+            return [None] * 3
 
         grad_norm = grad_oracle.norm().item()
         curr_token = tokenizer.decode([token_id], skip_special_tokens=True)
         bar.set_postfix_str(f'\b\b  Loss: {loss.item():.2e} - Gradient norm: {grad_norm:.2e} - Token: {curr_token:15s}')
 
-        if loss.item() < 1e-5 or grad_norm < 1e-12:
+        if loss.item() < 1e-5 or not baseline and grad_norm < 1e-12:
             final_timestep = i + 1
             break
 
@@ -152,7 +170,8 @@ def find_token(
 
 def find_prompt(
     llm, layer_idx, h_target,
-    optimizer_cls, lr, scheduler: bool = False
+    optimizer_cls, lr, scheduler: bool = False,
+    baseline: bool = False
 ):
     embedding_matrix = model.get_input_embeddings().weight
 
@@ -162,54 +181,64 @@ def find_prompt(
     discovered_embeddings = []
     discovered_ids        = []
     timesteps             = []
+    times                 = []
 
     start_time = time()
     for i in range(h_target.size(0)):
+        token_start_time = time()
+
         next_token_id, next_token_embedding, final_timestep = find_token(
             i, embedding_matrix, 
             discovered_embeddings, 
             llm, layer_idx, h_target,
-            optimizer_cls, lr, scheduler
+            optimizer_cls, lr, 
+            scheduler, baseline
         )
 
+        token_end_time = time()
+
         if next_token_embedding is None:
-            return None, None, None
+            return [None] * 4
+
 
         discovered_embeddings.append(next_token_embedding)
         discovered_ids.append(next_token_id)
         timesteps.append(final_timestep)
+        times.append(token_end_time - token_start_time)
 
     end_time = time()
 
     final_string = tokenizer.decode(discovered_ids, skip_special_tokens=True)
 
-    return end_time - start_time, final_string, timesteps
+    return end_time - start_time, final_string, timesteps, times
 
 
 def inversion_attack(
     prompt, llm, layer_idx,
     optimizer_cls, lr,
-    seed=8, scheduler: bool = False
+    seed=8, scheduler: bool = False,
+    baseline: bool = False
 ):
     
     set_seed(seed)
     h_target = get_whole(prompt, model, tokenizer, layer_idx)
 
-    invertion_time, predicted_prompt, timesteps = find_prompt(
+    invertion_time, predicted_prompt, timesteps, times = find_prompt(
         llm, layer_idx, h_target, 
-        optimizer_cls, lr, scheduler
+        optimizer_cls, lr, 
+        scheduler, baseline
     )
 
     if predicted_prompt is None:
         print('Inversion failed or diverged with the given parameters.')
-        return False, invertion_time, None
+        return False, None, None, None
 
     match = prompt == predicted_prompt
     print(f'Original {"==" if match else "!="} Reconstructed')
     print(f'Invertion time: {invertion_time:.2f} seconds')
     print(f'Average Timesteps: {np.mean(timesteps):.2f}')
 
-    return match, invertion_time, timesteps
+    return match, invertion_time, timesteps, times
 
 
 if __name__ == '__main__':
@@ -230,7 +259,10 @@ if __name__ == '__main__':
     
     learning_rates = args.learning_rates
     scheduler = args.scheduler
-    optimizers = { x: load_module('torch.optim', x) for x in args.optimizers }
+    baseline = args.baseline
+
+    optimizers = { x: load_module('torch.optim', x) for x in args.optimizers } if not baseline else {'': ''}
+
     token_lengths = args.token_lengths
     layers = args.layers
 
@@ -257,20 +289,22 @@ if __name__ == '__main__':
 
     grid = list(product(
         learning_rates,
-        optimizers.items(),
         token_lengths,
-        layers
+        layers,
+        optimizers.items(),
     ))
+
 
     write_header = True
     results = []
-    for lr, (opt_name, opt_class), token_length, layer in grid:
+    for lr, token_length, layer, (opt_name, opt_class) in grid:
         for idx, prompt in enumerate(df[token_length].values):
             print(f'\nPrompt #{idx + 1:3d} | Layer: {layer} | LR: {lr:.2e} | Optimizer: {opt_name} | Length: {token_length:2d}')
 
-            match, time_taken, timesteps = inversion_attack(
+            match, time_taken, timesteps, times = inversion_attack(
                 prompt, model, layer,
-                opt_class, lr, seed, scheduler
+                opt_class, lr, seed, 
+                scheduler, baseline
             )
 
             row = {
@@ -281,18 +315,10 @@ if __name__ == '__main__':
                 'optimizer': opt_name,
                 'token_length': token_length,
                 'match': match,
+                'inversion_time': time_taken if match else -1,
+                'timesteps': '_'.join([str(x) for x in timesteps]) if match else '',
+                'times': '_'.join([f'{x:.2f}' for x in times]) if match else ''
             }
-
-            if match:
-                row.update({
-                    'inversion_time': time_taken,
-                    'timesteps': '_'.join([str(x) for x in timesteps]),
-                })
-            else:
-                row.update({
-                    'inversion_time': -1,
-                    'timesteps': '',
-                })
 
             results.append(row)
 

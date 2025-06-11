@@ -42,7 +42,7 @@ def parse_args():
     )
     parser.add_argument(
         '-n', '--max-prompts', 
-        type=int, default=2,
+        type=int, default=10,
         help='Maximum amount of prompts to use.'
     )
     parser.add_argument(
@@ -67,7 +67,7 @@ def parse_args():
     )
     parser.add_argument(
         '--optimizers', 
-        type=str, nargs='+', default=['SGD', 'Adam', 'AdamW', 'RMSprop', 'NAdam', 'LBFGS'],
+        type=str, nargs='+', default=['SGD', 'Adam', 'AdamW', 'RMSprop', 'LBFGS'],
         help='List of torch optimizer names to use. Example: --optimizers SGD AdamW'
     )
     parser.add_argument(
@@ -218,6 +218,7 @@ if __name__ == '__main__':
     # TODO: The name of the file should be <name of our method>_experiments.py
 
     args = parse_args()
+    print(f'Running with arguments: {args}')
 
     model_id = args.id
     load_in_8bit = args.quantize

@@ -47,9 +47,10 @@ def plot_metrics(
         metrics, 
         fill_between=True, 
         rename=None, 
-        xlabel=r'Layer Index',
-        ylabel=r'Metric Value',
-        title='Metrics per Layer'
+        xlabel=None,
+        ylabel=None,
+        title=None,
+        figsize=(10, 6)
 ):  
     """
     Plot aggregated metrics per layer.
@@ -61,15 +62,33 @@ def plot_metrics(
     agg_metrics = {}
     for metric in metrics:
         agg_metrics[metric] = _agg_metric(metrics, metric)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=figsize)
     for i, (metric_name, (mean, std)) in enumerate(agg_metrics.items()):
         if fill_between:
             ax.fill_between(range(len(mean)), mean - std, mean + std, alpha=0.2, color=COLORS[i % len(COLORS)])
         ax.plot(mean, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)], marker='o')
-    ax.set_xticks(range(len(mean)))
-    ax.set_xticklabels([f'Layer {i}' for i in range(len(mean))], rotation=45)
     ax.set_xlabel(xlabel, fontsize=14)
     ax.set_ylabel(ylabel, fontsize=14)
     ax.set_title(title, fontsize=16)
     ax.legend()
     plt.show()
+
+def plot_metrics_over_time(
+        metrics, 
+        fill_between=True, 
+        rename=None, 
+        xlabel='Time (s)',
+        ylabel='Metric Value',
+        title='Metrics over Time',
+        figsize=(10, 6)
+):
+    """
+    Plot average metric before and after each time.
+    Args:
+        metrics (dict): Dictionary containing metric values for each time step.
+        fill_between (bool): Whether to fill the area between mean and std.
+        rename (dict): Optional dictionary to rename labels of metrics.
+    """
+    agg_metrics = {}
+    for metric in metrics:
+        agg_metrics[metric] = _agg_metric(metrics, metric)

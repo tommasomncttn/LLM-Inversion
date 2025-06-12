@@ -32,13 +32,17 @@ def compute_metrics(target_sentences, sentense_embeddings, output_sentences, out
     bert_scorer = BERTScorer(lang='en', rescale_with_baseline=True),
 ):
     """
-    Compute different metrics to evaluate simmilarity between predictions and ground truth
-    sentences.
+    Compute various metrics between target sentences and output sentences.
     Args:
-        predictions (list of str): List of predicted sentences.
-        ground_truth (list of str): List of ground truth sentences.
+        target_sentences (list of str): The ground truth sentences.
+        sentense_embeddings (list of torch.Tensor): The embeddings for the ground truth sentences.
+        output_sentences (list of str): The generated output sentences.
+        output_embeddings (list of torch.Tensor): The embeddings for the output sentences.
+        len_treshold (int): Minimum length threshold for considering a sentence pair.
+        rouge (Rouge): Rouge metric object.
+        bert_scorer (BERTScorer): BERTScore metric object.
     Returns:
-        dict: A dictionary containing the computed metrics.
+        dict: A dictionary containing computed metrics.
     """
     # bleu, rouge, bertscore, ...
     metrics = {}
@@ -62,10 +66,12 @@ def compute_metrics(target_sentences, sentense_embeddings, output_sentences, out
             print(len(output_sentences[i]), len(target_sentences[i]))
             rouge_s = {'rouge-l': {'f': 0.0, 'p': 0.0, 'r': 0.0}}
         _add_metric_result(metrics, 'rouge-l_f', rouge_s['rouge-l']['f'])
-        # add l2 distance between output and target embeddings
         _add_metric_result(metrics, 'l2_distance', np.linalg.norm(
-            sentense_embeddings[i] - output_embeddings[i]
-        ))
-        
+            sentense_embeddings[i] - output_embeddings[i],
+            axis=1
+        ).mean())
+    if len(target_sentences) == 1:
+        for key in metrics:
+            metrics[key] = metrics[key][0]
     return metrics
     

@@ -80,7 +80,6 @@ def compute_last_token_embedding_grad(
     llm: torch.nn.Module,
     layer_idx: int,
     h_target: torch.Tensor,
-    tokenizer: Optional[torch.nn.Module],
 ):
     device = next(llm.parameters()).device
     y = y.to(device)
@@ -94,7 +93,12 @@ def compute_last_token_embedding_grad(
     emb_layer.zero_grad()
 
     with torch.set_grad_enabled(True):
-        h_last = extract_hidden_states_prompt('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)[-1]
+        h_last = extract_hidden_states_ids(
+            input_ids=y.unsqueeze(0),
+            llm=llm,
+            layer_idx=layer_idx,
+            grad=True
+        )[-1]
         diff = h_last - h_target
         loss = torch.dot(diff, diff)
         loss.backward()
@@ -140,7 +144,12 @@ def compute_all_token_embeddings_grad(
     emb_layer.zero_grad()
 
     with torch.set_grad_enabled(True):
-        h_all = extract_hidden_states_prompt('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)
+        h_all = extract_hidden_states_ids(
+            input_ids=y.unsqueeze(0),
+            llm=llm,
+            layer_idx=layer_idx,
+            grad=True
+        )
         diff = h_all - h_target
         loss = torch.einsum('ij,ij->', diff, diff)  # sum over seq_len
         loss.backward()

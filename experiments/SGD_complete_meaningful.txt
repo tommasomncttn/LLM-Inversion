@@ -1,0 +1,1240 @@
+Running with arguments: Namespace(input='data/token_length_filtered_dataset.csv', output='results/SGD_complete_meaningful.csv', seed=8, max_prompts=10, id='roneneldan/TinyStories-1M', quantize=False, learning_rates=[1.0, 0.1, 0.01], scheduler=False, baseline=False, optimizers=['SGD'], token_lengths=[20], layers=[1, 2, 3, 4, 5, 6, 7, 8])
+
+Prompt #  1 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.01 seconds
+Average Timesteps: 6.05
+
+Prompt #  2 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.77 seconds
+Average Timesteps: 5.10
+
+Prompt #  3 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.86 seconds
+Average Timesteps: 5.65
+
+Prompt #  4 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.77 seconds
+Average Timesteps: 5.00
+
+Prompt #  5 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.80 seconds
+Average Timesteps: 5.15
+
+Prompt #  6 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.86 seconds
+Average Timesteps: 5.65
+
+Prompt #  7 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.95 seconds
+Average Timesteps: 6.25
+
+Prompt #  8 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 73.44 seconds
+Average Timesteps: 471.25
+
+Prompt #  9 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.87 seconds
+Average Timesteps: 5.70
+
+Prompt # 10 | Layer: 1 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 0.65 seconds
+Average Timesteps: 4.25
+
+Prompt #  1 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.83 seconds
+Average Timesteps: 10.90
+
+Prompt #  2 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.83 seconds
+Average Timesteps: 11.05
+
+Prompt #  3 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.88 seconds
+Average Timesteps: 11.15
+
+Prompt #  4 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.72 seconds
+Average Timesteps: 10.35
+
+Prompt #  5 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.57 seconds
+Average Timesteps: 9.60
+
+Prompt #  6 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.54 seconds
+Average Timesteps: 9.45
+
+Prompt #  7 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.83 seconds
+Average Timesteps: 11.20
+
+Prompt #  8 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 96.32 seconds
+Average Timesteps: 586.45
+
+Prompt #  9 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.59 seconds
+Average Timesteps: 10.00
+
+Prompt # 10 | Layer: 2 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1.39 seconds
+Average Timesteps: 8.70
+
+Prompt #  1 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 3.62 seconds
+Average Timesteps: 20.95
+
+Prompt #  2 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.40 seconds
+Average Timesteps: 24.95
+
+Prompt #  3 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.00 seconds
+Average Timesteps: 21.70
+
+Prompt #  4 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 3.56 seconds
+Average Timesteps: 19.75
+
+Prompt #  5 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.00 seconds
+Average Timesteps: 20.00
+
+Prompt #  6 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.06 seconds
+Average Timesteps: 19.90
+
+Prompt #  7 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.28 seconds
+Average Timesteps: 21.05
+
+Prompt #  8 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 97.19 seconds
+Average Timesteps: 449.35
+
+Prompt #  9 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 5.11 seconds
+Average Timesteps: 22.45
+
+Prompt # 10 | Layer: 3 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 3.99 seconds
+Average Timesteps: 17.60
+
+Prompt #  1 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.76 seconds
+Average Timesteps: 40.80
+
+Prompt #  2 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.37 seconds
+Average Timesteps: 48.10
+
+Prompt #  3 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 10.81 seconds
+Average Timesteps: 45.55
+
+Prompt #  4 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.26 seconds
+Average Timesteps: 38.90
+
+Prompt #  5 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.74 seconds
+Average Timesteps: 48.05
+
+Prompt #  6 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.47 seconds
+Average Timesteps: 37.95
+
+Prompt #  7 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.46 seconds
+Average Timesteps: 46.05
+
+Prompt #  8 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 148.23 seconds
+Average Timesteps: 593.80
+
+Prompt #  9 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 12.67 seconds
+Average Timesteps: 51.90
+
+Prompt # 10 | Layer: 4 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 8.85 seconds
+Average Timesteps: 36.20
+
+Prompt #  1 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 15.89 seconds
+Average Timesteps: 62.00
+
+Prompt #  2 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 20.58 seconds
+Average Timesteps: 80.40
+
+Prompt #  3 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 18.04 seconds
+Average Timesteps: 70.25
+
+Prompt #  4 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 14.99 seconds
+Average Timesteps: 58.55
+
+Prompt #  5 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 21.31 seconds
+Average Timesteps: 83.35
+
+Prompt #  6 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 17.35 seconds
+Average Timesteps: 66.50
+
+Prompt #  7 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 20.54 seconds
+Average Timesteps: 78.90
+
+Prompt #  8 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 179.93 seconds
+Average Timesteps: 687.95
+
+Prompt #  9 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 23.71 seconds
+Average Timesteps: 91.70
+
+Prompt # 10 | Layer: 5 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 15.26 seconds
+Average Timesteps: 59.20
+
+Prompt #  1 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 20.68 seconds
+Average Timesteps: 75.75
+
+Prompt #  2 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 26.71 seconds
+Average Timesteps: 97.25
+
+Prompt #  3 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 28.19 seconds
+Average Timesteps: 103.45
+
+Prompt #  4 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 21.59 seconds
+Average Timesteps: 79.60
+
+Prompt #  5 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 34.78 seconds
+Average Timesteps: 128.15
+
+Prompt #  6 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 23.18 seconds
+Average Timesteps: 85.25
+
+Prompt #  7 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 26.09 seconds
+Average Timesteps: 96.10
+
+Prompt #  8 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 215.41 seconds
+Average Timesteps: 774.70
+
+Prompt #  9 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 34.98 seconds
+Average Timesteps: 126.10
+
+Prompt # 10 | Layer: 6 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 21.77 seconds
+Average Timesteps: 78.90
+
+Prompt #  1 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 29.76 seconds
+Average Timesteps: 103.70
+
+Prompt #  2 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 36.82 seconds
+Average Timesteps: 127.80
+
+Prompt #  3 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 41.99 seconds
+Average Timesteps: 145.10
+
+Prompt #  4 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 30.36 seconds
+Average Timesteps: 104.85
+
+Prompt #  5 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 65.07 seconds
+Average Timesteps: 224.40
+
+Prompt #  6 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 33.84 seconds
+Average Timesteps: 117.55
+
+Prompt #  7 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 37.36 seconds
+Average Timesteps: 129.90
+
+Prompt #  8 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 340.36 seconds
+Average Timesteps: 1194.45
+
+Prompt #  9 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 47.25 seconds
+Average Timesteps: 169.20
+
+Prompt # 10 | Layer: 7 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 33.90 seconds
+Average Timesteps: 122.25
+
+Prompt #  1 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 10.36 seconds
+Average Timesteps: 36.10
+
+Prompt #  2 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 24.01 seconds
+Average Timesteps: 83.65
+
+Prompt #  3 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 33.32 seconds
+Average Timesteps: 113.95
+
+Prompt #  4 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 12.43 seconds
+Average Timesteps: 42.60
+
+Prompt #  5 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 20.05 seconds
+Average Timesteps: 68.35
+
+Prompt #  6 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.57 seconds
+Average Timesteps: 39.85
+
+Prompt #  7 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.26 seconds
+Average Timesteps: 31.55
+
+Prompt #  8 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 428.88 seconds
+Average Timesteps: 1464.65
+
+Prompt #  9 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.76 seconds
+Average Timesteps: 122.45
+
+Prompt # 10 | Layer: 8 | LR: 1.00e+00 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 690.48 seconds
+Average Timesteps: 2376.80
+
+Prompt #  1 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 7.30 seconds
+Average Timesteps: 35.80
+
+Prompt #  2 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 5.99 seconds
+Average Timesteps: 29.45
+
+Prompt #  3 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 6.52 seconds
+Average Timesteps: 32.05
+
+Prompt #  4 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 5.86 seconds
+Average Timesteps: 28.85
+
+Prompt #  5 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 5.72 seconds
+Average Timesteps: 28.20
+
+Prompt #  6 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 6.62 seconds
+Average Timesteps: 32.60
+
+Prompt #  7 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 7.03 seconds
+Average Timesteps: 34.65
+
+Prompt #  8 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 5.78 seconds
+Average Timesteps: 28.05
+
+Prompt #  9 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 6.44 seconds
+Average Timesteps: 31.25
+
+Prompt # 10 | Layer: 1 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 4.90 seconds
+Average Timesteps: 23.80
+
+Prompt #  1 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 14.94 seconds
+Average Timesteps: 68.85
+
+Prompt #  2 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 15.44 seconds
+Average Timesteps: 71.50
+
+Prompt #  3 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 14.70 seconds
+Average Timesteps: 68.00
+
+Prompt #  4 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 14.22 seconds
+Average Timesteps: 66.05
+
+Prompt #  5 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 12.87 seconds
+Average Timesteps: 59.50
+
+Prompt #  6 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 13.09 seconds
+Average Timesteps: 60.45
+
+Prompt #  7 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 15.63 seconds
+Average Timesteps: 72.00
+
+Prompt #  8 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 129.17 seconds
+Average Timesteps: 594.00
+
+Prompt #  9 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 13.33 seconds
+Average Timesteps: 61.70
+
+Prompt # 10 | Layer: 2 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.72 seconds
+Average Timesteps: 53.10
+
+Prompt #  1 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 31.26 seconds
+Average Timesteps: 135.15
+
+Prompt #  2 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.37 seconds
+Average Timesteps: 155.00
+
+Prompt #  3 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 31.84 seconds
+Average Timesteps: 139.95
+
+Prompt #  4 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 29.29 seconds
+Average Timesteps: 126.40
+
+Prompt #  5 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 31.40 seconds
+Average Timesteps: 133.90
+
+Prompt #  6 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 30.29 seconds
+Average Timesteps: 129.55
+
+Prompt #  7 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 33.75 seconds
+Average Timesteps: 148.25
+
+Prompt #  8 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.32 seconds
+Average Timesteps: 157.55
+
+Prompt #  9 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 33.26 seconds
+Average Timesteps: 143.65
+
+Prompt # 10 | Layer: 3 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 25.56 seconds
+Average Timesteps: 113.35
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 61.46 seconds
+Average Timesteps: 255.50
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 72.98 seconds
+Average Timesteps: 298.60
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 69.62 seconds
+Average Timesteps: 288.55
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 56.04 seconds
+Average Timesteps: 232.65
+
+Prompt #  5 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 70.73 seconds
+Average Timesteps: 290.30
+
+Prompt #  6 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 56.90 seconds
+Average Timesteps: 237.85
+
+Prompt #  7 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 71.71 seconds
+Average Timesteps: 299.05
+
+Prompt #  8 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 142.99 seconds
+Average Timesteps: 587.65
+
+Prompt #  9 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 74.45 seconds
+Average Timesteps: 310.00
+
+Prompt # 10 | Layer: 4 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 49.35 seconds
+Average Timesteps: 206.25
+
+Prompt #  1 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 97.39 seconds
+Average Timesteps: 384.60
+
+Prompt #  2 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 117.95 seconds
+Average Timesteps: 466.50
+
+Prompt #  3 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 114.81 seconds
+Average Timesteps: 450.35
+
+Prompt #  4 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 88.21 seconds
+Average Timesteps: 346.30
+
+Prompt #  5 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 128.91 seconds
+Average Timesteps: 503.35
+
+Prompt #  6 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 101.46 seconds
+Average Timesteps: 397.70
+
+Prompt #  7 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 123.71 seconds
+Average Timesteps: 484.15
+
+Prompt #  8 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 209.74 seconds
+Average Timesteps: 814.85
+
+Prompt #  9 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 128.10 seconds
+Average Timesteps: 500.95
+
+Prompt # 10 | Layer: 5 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 86.76 seconds
+Average Timesteps: 340.40
+
+Prompt #  1 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 118.02 seconds
+Average Timesteps: 440.55
+
+Prompt #  2 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 154.65 seconds
+Average Timesteps: 578.00
+
+Prompt #  3 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 168.52 seconds
+Average Timesteps: 630.30
+
+Prompt #  4 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 113.29 seconds
+Average Timesteps: 421.50
+
+Prompt #  5 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 184.72 seconds
+Average Timesteps: 683.65
+
+Prompt #  6 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 131.05 seconds
+Average Timesteps: 485.35
+
+Prompt #  7 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 157.75 seconds
+Average Timesteps: 585.35
+
+Prompt #  8 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 148.58 seconds
+Average Timesteps: 546.90
+
+Prompt #  9 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 183.07 seconds
+Average Timesteps: 677.90
+
+Prompt # 10 | Layer: 6 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 118.15 seconds
+Average Timesteps: 441.50
+
+Prompt #  1 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 167.09 seconds
+Average Timesteps: 592.40
+
+Prompt #  2 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 208.76 seconds
+Average Timesteps: 735.75
+
+Prompt #  3 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 239.30 seconds
+Average Timesteps: 850.25
+
+Prompt #  4 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 148.58 seconds
+Average Timesteps: 525.30
+
+Prompt #  5 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 263.38 seconds
+Average Timesteps: 943.25
+
+Prompt #  6 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 185.70 seconds
+Average Timesteps: 663.65
+
+Prompt #  7 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 201.07 seconds
+Average Timesteps: 720.10
+
+Prompt #  8 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 427.86 seconds
+Average Timesteps: 1523.90
+
+Prompt #  9 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 254.32 seconds
+Average Timesteps: 908.65
+
+Prompt # 10 | Layer: 7 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 171.47 seconds
+Average Timesteps: 612.40
+
+Prompt #  1 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 10.42 seconds
+Average Timesteps: 36.05
+
+Prompt #  2 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.66 seconds
+Average Timesteps: 121.85
+
+Prompt #  3 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 92.04 seconds
+Average Timesteps: 310.20
+
+Prompt #  4 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 13.69 seconds
+Average Timesteps: 47.60
+
+Prompt #  5 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 21.99 seconds
+Average Timesteps: 74.65
+
+Prompt #  6 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 11.55 seconds
+Average Timesteps: 39.45
+
+Prompt #  7 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.60 seconds
+Average Timesteps: 32.65
+
+Prompt #  8 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 419.05 seconds
+Average Timesteps: 1422.10
+
+Prompt #  9 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 39.96 seconds
+Average Timesteps: 135.15
+
+Prompt # 10 | Layer: 8 | LR: 1.00e-01 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 734.04 seconds
+Average Timesteps: 2405.55
+
+Prompt #  1 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 61.75 seconds
+Average Timesteps: 290.45
+
+Prompt #  2 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 49.58 seconds
+Average Timesteps: 234.05
+
+Prompt #  3 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 54.47 seconds
+Average Timesteps: 256.80
+
+Prompt #  4 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 48.16 seconds
+Average Timesteps: 224.20
+
+Prompt #  5 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 46.95 seconds
+Average Timesteps: 218.50
+
+Prompt #  6 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 56.71 seconds
+Average Timesteps: 264.05
+
+Prompt #  7 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 59.96 seconds
+Average Timesteps: 282.85
+
+Prompt #  8 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 47.46 seconds
+Average Timesteps: 223.40
+
+Prompt #  9 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 52.16 seconds
+Average Timesteps: 249.70
+
+Prompt # 10 | Layer: 1 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 40.06 seconds
+Average Timesteps: 195.80
+
+Prompt #  1 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 113.12 seconds
+Average Timesteps: 525.00
+
+Prompt #  2 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 115.41 seconds
+Average Timesteps: 539.45
+
+Prompt #  3 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 111.83 seconds
+Average Timesteps: 525.15
+
+Prompt #  4 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 103.51 seconds
+Average Timesteps: 486.05
+
+Prompt #  5 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 96.02 seconds
+Average Timesteps: 447.35
+
+Prompt #  6 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 103.17 seconds
+Average Timesteps: 480.90
+
+Prompt #  7 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 120.57 seconds
+Average Timesteps: 562.00
+
+Prompt #  8 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 90.62 seconds
+Average Timesteps: 422.60
+
+Prompt #  9 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 100.16 seconds
+Average Timesteps: 466.90
+
+Prompt # 10 | Layer: 2 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 88.12 seconds
+Average Timesteps: 410.60
+
+Prompt #  1 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 222.07 seconds
+Average Timesteps: 976.90
+
+Prompt #  2 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 245.37 seconds
+Average Timesteps: 1081.55
+
+Prompt #  3 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 236.96 seconds
+Average Timesteps: 1044.00
+
+Prompt #  4 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 198.88 seconds
+Average Timesteps: 875.45
+
+Prompt #  5 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 217.41 seconds
+Average Timesteps: 945.25
+
+Prompt #  6 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 218.71 seconds
+Average Timesteps: 951.65
+
+Prompt #  7 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 249.36 seconds
+Average Timesteps: 1085.70
+
+Prompt #  8 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 188.36 seconds
+Average Timesteps: 821.00
+
+Prompt #  9 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 230.68 seconds
+Average Timesteps: 1010.95
+
+Prompt # 10 | Layer: 3 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 182.32 seconds
+Average Timesteps: 800.90
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 398.45 seconds
+Average Timesteps: 1669.05
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 460.84 seconds
+Average Timesteps: 1919.40
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 483.08 seconds
+Average Timesteps: 2000.30
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 357.61 seconds
+Average Timesteps: 1478.20
+
+Prompt #  5 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 438.19 seconds
+Average Timesteps: 1802.10
+
+Prompt #  6 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 388.86 seconds
+Average Timesteps: 1612.15
+
+Prompt #  7 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 480.94 seconds
+Average Timesteps: 1986.80
+
+Prompt #  8 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 343.19 seconds
+Average Timesteps: 1420.75
+
+Prompt #  9 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 476.57 seconds
+Average Timesteps: 1964.00
+
+Prompt # 10 | Layer: 4 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 327.58 seconds
+Average Timesteps: 1362.00
+
+Prompt #  1 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 618.21 seconds
+Average Timesteps: 2442.60
+
+Prompt #  2 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 760.49 seconds
+Average Timesteps: 2976.90
+
+Prompt #  3 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 752.14 seconds
+Average Timesteps: 2940.30
+
+Prompt #  4 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 535.07 seconds
+Average Timesteps: 2089.40
+
+Prompt #  5 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 761.54 seconds
+Average Timesteps: 2995.05
+
+Prompt #  6 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 630.46 seconds
+Average Timesteps: 2500.80
+
+Prompt #  7 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 773.80 seconds
+Average Timesteps: 3056.65
+
+Prompt #  8 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 570.22 seconds
+Average Timesteps: 2221.75
+
+Prompt #  9 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 743.14 seconds
+Average Timesteps: 2933.65
+
+Prompt # 10 | Layer: 5 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 535.28 seconds
+Average Timesteps: 2115.80
+
+Prompt #  1 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 704.84 seconds
+Average Timesteps: 2650.70
+
+Prompt #  2 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 977.64 seconds
+Average Timesteps: 3673.75
+
+Prompt #  3 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1069.16 seconds
+Average Timesteps: 4064.70
+
+Prompt #  4 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 649.75 seconds
+Average Timesteps: 2439.85
+
+Prompt #  5 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 972.43 seconds
+Average Timesteps: 3676.95
+
+Prompt #  6 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 773.41 seconds
+Average Timesteps: 2909.80
+
+Prompt #  7 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 927.04 seconds
+Average Timesteps: 3472.00
+
+Prompt #  8 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 760.41 seconds
+Average Timesteps: 2817.60
+
+Prompt #  9 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1045.85 seconds
+Average Timesteps: 3924.80
+
+Prompt # 10 | Layer: 6 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 710.11 seconds
+Average Timesteps: 2682.80
+
+Prompt #  1 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 954.98 seconds
+Average Timesteps: 3415.10
+
+Prompt #  2 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1194.34 seconds
+Average Timesteps: 4275.30
+
+Prompt #  3 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1543.90 seconds
+Average Timesteps: 5518.15
+
+Prompt #  4 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 849.69 seconds
+Average Timesteps: 3027.70
+
+Prompt #  5 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1275.58 seconds
+Average Timesteps: 4530.10
+
+Prompt #  6 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1039.69 seconds
+Average Timesteps: 3793.70
+
+Prompt #  7 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1028.98 seconds
+Average Timesteps: 4049.50
+
+Prompt #  8 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1122.44 seconds
+Average Timesteps: 4458.15
+
+Prompt #  9 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 1627.35 seconds
+Average Timesteps: 6471.35
+
+Prompt # 10 | Layer: 7 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 928.63 seconds
+Average Timesteps: 3683.75
+
+Prompt #  1 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 9.81 seconds
+Average Timesteps: 37.05
+
+Prompt #  2 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.48 seconds
+Average Timesteps: 133.05
+
+Prompt #  3 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 169.47 seconds
+Average Timesteps: 629.10
+
+Prompt #  4 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 12.47 seconds
+Average Timesteps: 46.90
+
+Prompt #  5 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 20.50 seconds
+Average Timesteps: 77.15
+
+Prompt #  6 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 13.58 seconds
+Average Timesteps: 51.25
+
+Prompt #  7 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 8.40 seconds
+Average Timesteps: 31.65
+
+Prompt #  8 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 476.73 seconds
+Average Timesteps: 1784.70
+
+Prompt #  9 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 35.65 seconds
+Average Timesteps: 134.80
+
+Prompt # 10 | Layer: 8 | LR: 1.00e-02 | Optimizer: SGD | Length: 20
+Original == Reconstructed
+Invertion time: 213.39 seconds
+Average Timesteps: 808.20
+
+All results saved to results/SGD_complete_meaningful.csv
+
+=== Mean and Std of Inversion Time (matched only) ===
+
+-- Grouped by Token Length --
+                    mean         std
+token_length                        
+20            194.885902  306.136956
+
+-- Grouped by Optimizer --
+                 mean         std
+optimizer                        
+SGD        194.885902  306.136956
+
+-- Grouped by Learning Rate --
+                     mean         std
+learning_rate                        
+0.01           446.716009  403.347046
+0.10            96.140321  114.007179
+1.00            41.801377  100.094386
+
+-- Grouped by Layer Index --
+             mean         std
+layer                        
+1       22.013326   25.190929
+2       46.971088   49.591964
+3       88.056179   96.771273
+4      170.838918  182.458747
+5      274.166235  292.890325
+6      350.727129  379.870583
+7      484.327214  513.520805
+8      121.987130  207.603532
+
+=== Match Statistics ===
+Matched:   240
+Unmatched: 0
+Total:     240
+Match Rate: 100.00%

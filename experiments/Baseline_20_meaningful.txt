@@ -1,0 +1,81 @@
+Running with arguments: Namespace(input='data/token_length_filtered_dataset.csv', output='results/Baseline_20_meaningful.csv', seed=8, max_prompts=10, id='roneneldan/TinyStories-1M', quantize=False, learning_rates=[1.0], scheduler=False, baseline=True, optimizers=['SGD', 'Adam', 'AdamW', 'RMSprop', 'LBFGS'], token_lengths=[20], layers=[4])
+
+Prompt #  1 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 7351.39 seconds
+Average Timesteps: 48474.40
+
+Prompt #  2 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 7207.43 seconds
+Average Timesteps: 47019.75
+
+Prompt #  3 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 7010.39 seconds
+Average Timesteps: 47698.20
+
+Prompt #  4 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 6437.30 seconds
+Average Timesteps: 43601.25
+
+Prompt #  5 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 6708.78 seconds
+Average Timesteps: 45484.55
+
+Prompt #  6 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 6819.20 seconds
+Average Timesteps: 47756.35
+
+Prompt #  7 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 6174.64 seconds
+Average Timesteps: 47993.80
+
+Prompt #  8 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 4445.03 seconds
+Average Timesteps: 41485.00
+
+Prompt #  9 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 4891.98 seconds
+Average Timesteps: 45640.30
+
+Prompt # 10 | Layer: 4 | LR: 1.00e+00 | Optimizer:  | Length: 20
+Original == Reconstructed
+Invertion time: 4490.71 seconds
+Average Timesteps: 42003.25
+
+All results saved to results/Baseline_20_meaningful.csv
+
+=== Mean and Std of Inversion Time (matched only) ===
+
+-- Grouped by Token Length --
+                     mean          std
+token_length                          
+20            6153.685792  1124.849006
+
+-- Grouped by Optimizer --
+Empty DataFrame
+Columns: [mean, std]
+Index: []
+
+-- Grouped by Learning Rate --
+                      mean          std
+learning_rate                          
+1.0            6153.685792  1124.849006
+
+-- Grouped by Layer Index --
+              mean          std
+layer                          
+4      6153.685792  1124.849006
+
+=== Match Statistics ===
+Matched:   10
+Unmatched: 0
+Total:     10
+Match Rate: 100.00%

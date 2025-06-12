@@ -1,0 +1,168 @@
+Running with arguments: Namespace(input='data/token_length_filtered_dataset.csv', output='results/ALL_complete_meaningful_2.csv', seed=8, max_prompts=10, id='roneneldan/TinyStories-1M', quantize=False, learning_rates=[0.01, 0.1], scheduler=False, baseline=False, optimizers=['Adam', 'AdamW', 'RMSprop', 'LBFGS'], token_lengths=[20], layers=[4])
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 20.92 seconds
+Average Timesteps: 107.15
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 23.16 seconds
+Average Timesteps: 123.35
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 18.77 seconds
+Average Timesteps: 101.90
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 18.17 seconds
+Average Timesteps: 98.30
+
+Prompt #  5 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 21.56 seconds
+Average Timesteps: 115.10
+
+Prompt #  6 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 18.09 seconds
+Average Timesteps: 96.70
+
+Prompt #  7 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 19.01 seconds
+Average Timesteps: 100.50
+
+Prompt #  8 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 133.54 seconds
+Average Timesteps: 692.65
+
+Prompt #  9 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 19.87 seconds
+Average Timesteps: 103.75
+
+Prompt # 10 | Layer: 4 | LR: 1.00e-02 | Optimizer: Adam | Length: 20
+Original == Reconstructed
+Invertion time: 15.57 seconds
+Average Timesteps: 81.45
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 20.50 seconds
+Average Timesteps: 107.20
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 23.44 seconds
+Average Timesteps: 122.45
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 19.47 seconds
+Average Timesteps: 101.70
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 18.70 seconds
+Average Timesteps: 98.10
+
+Prompt #  5 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 22.06 seconds
+Average Timesteps: 115.60
+
+Prompt #  6 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 18.39 seconds
+Average Timesteps: 96.70
+
+Prompt #  7 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 18.76 seconds
+Average Timesteps: 100.95
+
+Prompt #  8 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 125.87 seconds
+Average Timesteps: 671.30
+
+Prompt #  9 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 19.65 seconds
+Average Timesteps: 103.55
+
+Prompt # 10 | Layer: 4 | LR: 1.00e-02 | Optimizer: AdamW | Length: 20
+Original == Reconstructed
+Invertion time: 15.33 seconds
+Average Timesteps: 80.95
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 9.79 seconds
+Average Timesteps: 51.80
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 12.05 seconds
+Average Timesteps: 63.80
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 8.40 seconds
+Average Timesteps: 44.30
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 9.27 seconds
+Average Timesteps: 49.10
+
+Prompt #  5 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 11.48 seconds
+Average Timesteps: 60.70
+
+Prompt #  6 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 7.05 seconds
+Average Timesteps: 37.35
+
+Prompt #  7 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 8.27 seconds
+Average Timesteps: 43.80
+
+Prompt #  8 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 125.61 seconds
+Average Timesteps: 655.75
+
+Prompt #  9 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 9.10 seconds
+Average Timesteps: 48.15
+
+Prompt # 10 | Layer: 4 | LR: 1.00e-02 | Optimizer: RMSprop | Length: 20
+Original == Reconstructed
+Invertion time: 80.79 seconds
+Average Timesteps: 433.00
+
+Prompt #  1 | Layer: 4 | LR: 1.00e-02 | Optimizer: LBFGS | Length: 20
+Original == Reconstructed
+Invertion time: 11595.61 seconds
+Average Timesteps: 40195.40
+
+Prompt #  2 | Layer: 4 | LR: 1.00e-02 | Optimizer: LBFGS | Length: 20
+Original == Reconstructed
+Invertion time: 8806.53 seconds
+Average Timesteps: 32550.65
+
+Prompt #  3 | Layer: 4 | LR: 1.00e-02 | Optimizer: LBFGS | Length: 20
+Original == Reconstructed
+Invertion time: 10400.25 seconds
+Average Timesteps: 36862.85
+
+Prompt #  4 | Layer: 4 | LR: 1.00e-02 | Optimizer: LBFGS | Length: 20

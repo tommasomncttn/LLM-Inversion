@@ -22,8 +22,8 @@ def _agg_metric(metric_dict, metric_name):
     if metric_name not in metric_dict:
         raise ValueError(f"Metric '{metric_name}' not found in metric_dict.")
     res = (
-        np.mean(metric_dict[metric_name], axis=1),
-        np.std(metric_dict[metric_name], axis=1)
+        np.nanmean(metric_dict[metric_name], axis=1),
+        np.nanstd(metric_dict[metric_name], axis=1)
     )
     return res
 

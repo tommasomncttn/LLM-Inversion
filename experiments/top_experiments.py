@@ -20,7 +20,7 @@ import transformers
 transformers.logging.set_verbosity_error()
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-from utils.general import compute_last_token_embedding_grad_emb, get_whole, set_seed, load_module, get_whole_embeddings
+from utils.general import compute_last_token_embedding_grad_emb, extract_hidden_states_prompt, set_seed, load_module, extract_hidden_states
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Run inversion attack with given configuration.')
@@ -134,7 +134,7 @@ def find_token(
         grad_oracle = loss = torch.zeros_like(h_target[token_idx])
 
         if baseline:
-            h_pred = get_whole_embeddings(input_embeddings, llm, layer_idx, grad=False)
+            h_pred = extract_hidden_states(input_embeddings, llm, layer_idx, grad=False)
             loss = torch.nn.functional.mse_loss(h_pred[-1], h_target[token_idx], reduction='sum')
         else:
             grad_oracle, loss = compute_last_token_embedding_grad_emb(
@@ -221,7 +221,7 @@ def inversion_attack(
 ):
     
     set_seed(seed)
-    h_target = get_whole(prompt, model, tokenizer, layer_idx)
+    h_target = extract_hidden_states_prompt(prompt, model, tokenizer, layer_idx)
 
     invertion_time, predicted_prompt, timesteps, times = find_prompt(
         llm, layer_idx, h_target, 

@@ -6,34 +6,53 @@ import torch.nn.functional as F
 import torch
 from typing import Optional, Tuple
 
-def get_whole(
+def extract_hidden_states_prompt(
     prompt: str,
     llm: torch.nn.Module,
     tokenizer,
     layer_idx: int,
-    input_ids: Optional[torch.Tensor] = None,
-    grad: bool = False
+    grad: bool = False,
 ) -> torch.Tensor:
     """
     Tokenize `prompt`, do a forward pass with output_hidden_states=True,
     and return the hidden vector of the *last* token at layer `layer_idx`.
-
     Args:
         prompt (str): the input string, e.g. "Harry".
         llm (nn.Module): a HuggingFace‐style model (with embeddings + hidden_states).
         tokenizer: the corresponding tokenizer for `llm`.
         layer_idx (int): which hidden‐layer index to extract (0=embeddings, 1=first block, etc.)
-
+        grad (bool): whether to compute gradients or not.
     Returns:
         Tensor of shape (hidden_size,) = the last‐token hidden state at `layer_idx`,
-        computed under torch.no_grad().
+        computed under torch.no_grad() if grad=False, otherwise gradients are enabled.
     """
-    # 1) Tokenize (and move to same device as the model).
     device = next(llm.parameters()).device
-    if input_ids is None:
-        encoded = tokenizer(prompt, return_tensors="pt")
-        input_ids = encoded["input_ids"].to(device)      # shape (1, seq_len)
-    
+    # if input_ids is None:
+    encoded = tokenizer(prompt, return_tensors="pt")
+    input_ids = encoded["input_ids"].to(device)      # shape (1, seq_len)
+    return extract_hidden_states_ids(
+        input_ids=input_ids,
+        llm=llm,
+        layer_idx=layer_idx,
+        grad=grad
+    )
+
+def extract_hidden_states_ids(
+    input_ids: torch.LongTensor,
+    llm: torch.nn.Module,
+    layer_idx: int,
+    grad: bool = False
+) -> torch.Tensor:
+    """
+    Extract hidden states for the last token in a sequence of input IDs.
+    Args:
+        input_ids (torch.LongTensor): Token IDs for the sequence.
+        llm (torch.nn.Module): The language model.
+        layer_idx (int): The layer index to target for inversion.
+        grad (bool): Whether to compute gradients or not.
+    Returns:
+        torch.Tensor: Hidden state of the last token at the specified layer index.
+    """
     if not grad:
         # Forward under no_grad and detach before returning
         with torch.no_grad():
@@ -75,7 +94,7 @@ def compute_last_token_embedding_grad(
     emb_layer.zero_grad()
 
     with torch.set_grad_enabled(True):
-        h_last = get_whole('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)[-1]
+        h_last = extract_hidden_states_prompt('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)[-1]
         diff = h_last - h_target
         loss = torch.dot(diff, diff)
         loss.backward()
@@ -121,7 +140,7 @@ def compute_all_token_embeddings_grad(
     emb_layer.zero_grad()
 
     with torch.set_grad_enabled(True):
-        h_all = get_whole('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)
+        h_all = extract_hidden_states_prompt('', llm, tokenizer, layer_idx, y.unsqueeze(0), grad=True)
         diff = h_all - h_target
         loss = torch.einsum('ij,ij->', diff, diff)  # sum over seq_len
         loss.backward()
@@ -135,7 +154,7 @@ def compute_all_token_embeddings_grad(
     return grad_sequence, loss.item()
 
 
-def get_whole_embeddings(
+def extract_hidden_states(
     embeddings: torch.Tensor,
     llm: torch.nn.Module,
     layer_idx: int,
@@ -155,7 +174,6 @@ def get_whole_embeddings(
         Tensor of shape (hidden_size,) = the last‐token hidden state at `layer_idx`,
         computed under torch.no_grad().
     """
-    
     if not grad:
         # Forward under no_grad and detach before returning
         with torch.no_grad():

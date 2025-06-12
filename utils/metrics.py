@@ -27,6 +27,37 @@ def _agg_metric(metric_dict, metric_name):
     )
     return res
 
+def _agg_metric_over_time(metric_dict, metric_name, window_size=1):
+    """
+    Aggregate metrics over time.
+    Args:
+        metrics (dict): Dictionary containing metric values over time.
+    Returns:
+        dict: Average and compute the std of all points smaller that each time point.
+    """
+    assert 'time' in metric_dict, "Metrics must contain 'time' key for aggregation."
+    assert metric_name in metric_dict, f"Metric '{metric_name}' not found in metric_dict."
+
+    times_metric = np.array(list(zip(metric_dict['time'].flatten(), metric_dict[metric_name].flatten())))
+    sorted_indices = np.argsort(times_metric[:, 0])
+    sorted_times_metric = times_metric[sorted_indices]
+
+    agg = []
+    values = sorted_times_metric[:, 1]
+    for i in range(len(sorted_times_metric)):
+        time = sorted_times_metric[i, 0]
+        if window_size is not None and i < window_size:
+            continue
+        if window_size is not None:
+            values_before = values[i - window_size:i + 1]
+        else:
+            values_before = values[:i + 1]
+        mean = np.nanmean(values_before)
+        std = np.nanstd(values_before)
+        agg.append((time, mean, std))
+    return agg
+
+
 def compute_metrics(target_sentences, sentense_embeddings, output_sentences, output_embeddings, len_treshold=3,
     rouge = Rouge(),
     bert_scorer = BERTScorer(lang='en', rescale_with_baseline=True),
@@ -44,7 +75,6 @@ def compute_metrics(target_sentences, sentense_embeddings, output_sentences, out
     Returns:
         dict: A dictionary containing computed metrics.
     """
-    # bleu, rouge, bertscore, ...
     metrics = {}
     for i in range(len(target_sentences)):
         if len(output_sentences[i]) < len_treshold or len(target_sentences[i]) < len_treshold:

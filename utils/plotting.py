@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from utils.metrics import _agg_metric
+from utils.metrics import _agg_metric, _agg_metric_over_time
 from utils.constants import COLORS
 
 
@@ -73,14 +73,16 @@ def plot_metrics(
     ax.legend()
     plt.show()
 
+
 def plot_metrics_over_time(
-        metrics, 
-        fill_between=True, 
-        rename=None, 
-        xlabel='Time (s)',
-        ylabel='Metric Value',
-        title='Metrics over Time',
-        figsize=(10, 6)
+    metrics, 
+    fill_between=True, 
+    rename=None, 
+    xlabel='Time (s)',
+    ylabel='Metric Value',
+    title='Metrics over Time',
+    figsize=(10, 6),
+    window_size=None,
 ):
     """
     Plot average metric before and after each time.
@@ -90,5 +92,18 @@ def plot_metrics_over_time(
         rename (dict): Optional dictionary to rename labels of metrics.
     """
     agg_metrics = {}
-    for metric in metrics:
-        agg_metrics[metric] = _agg_metric(metrics, metric)
+    for metric in set(metrics.keys()) - {'time'}:
+        agg_metrics[metric] = _agg_metric_over_time(metrics, metric, window_size=window_size)
+    
+    fig, ax = plt.subplots(figsize=figsize)
+    for i, (metric_name, values) in enumerate(agg_metrics.items()):
+        times, means, stds = zip(*values)
+        if fill_between:
+            ax.fill_between(times, [m - s for m, s in zip(means, stds)], [m + s for m, s in zip(means, stds)], 
+                            alpha=0.2, color=COLORS[i % len(COLORS)])
+        ax.plot(times, means, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)], marker='o')
+    ax.set_xlabel(xlabel, fontsize=14)
+    ax.set_ylabel(ylabel, fontsize=14)
+    ax.set_title(title, fontsize=16)
+    ax.legend()
+    plt.show()

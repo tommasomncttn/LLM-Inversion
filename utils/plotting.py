@@ -80,8 +80,8 @@ def plot_metrics_over_time(
     rename=None, 
     xlabel='Time (s)',
     ylabel='Metric Value',
-    title='Metrics over Time',
-    figsize=(10, 6),
+    title=None,
+    figsize=(12, 8),
     window_size=None,
     color=None,
 ):
@@ -96,15 +96,21 @@ def plot_metrics_over_time(
     for metric in [k for k in metrics if 'time' not in k]:
         agg_metrics[metric] = _agg_metric_over_time(metrics, metric, window_size=window_size)
     
-    fig, ax = plt.subplots(figsize=figsize)
+    fig, ax = plt.subplots(figsize=figsize,dpi=100)
     for i, (metric_name, values) in enumerate(agg_metrics.items()):
         times, means, stds = zip(*values)
         if fill_between:
             ax.fill_between(times, [m - s for m, s in zip(means, stds)], [m + s for m, s in zip(means, stds)], 
                             alpha=0.2, color=COLORS[i % len(COLORS)] if not color else color)
-        ax.plot(times, means, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)] if not color else color, marker='o')
-    ax.set_xlabel(xlabel, fontsize=14)
-    ax.set_ylabel(ylabel, fontsize=14)
-    ax.set_title(title, fontsize=16)
-    ax.legend()
+        ax.plot(times, means, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)] if not color else color)
+    ax.set_xlabel(xlabel, fontsize=24)
+    ax.set_ylabel(ylabel, fontsize=24)
+    ax.set_title(title, fontsize=24)
+    # increase font size of ticks
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.tick_params(axis='both', which='minor', labelsize=16)
+    # remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.legend(fontsize=16)
     plt.show()

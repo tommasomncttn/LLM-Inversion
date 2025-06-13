@@ -241,7 +241,8 @@ def find_token(
 def gd_sequential(
     model, tokenizer, prompt, layer_idx,
     optimizer_cls, lr,
-    seed=8
+    seed=8,
+    **kwargs
 ):
     """
     Sequentially invert the prompt using a PyTorch optimizer.

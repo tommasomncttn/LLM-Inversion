@@ -3,7 +3,7 @@ import torch
 from torch.optim import Adam
 from tqdm import tqdm
 
-from utils.general import extract_hidden_states_ids, consolidate_logs, extract_hidden_states_prompt, set_seed
+from utils.general import compute_last_token_embedding_grad_emb, extract_hidden_states_ids, consolidate_logs, extract_hidden_states_prompt, set_seed
 from utils.metrics import compute_metrics
 
 
@@ -182,3 +182,122 @@ def exhaustive_search(model, tokenizer, prompt, layer_idx=0, seed=42, eps=1e-3, 
     output_sentence = tokenizer.decode(output_tokens, skip_special_tokens=True)
     logs = consolidate_logs(logs)
     return output_sentence, logs
+
+
+def find_token(
+    token_idx,
+    embedding_matrix,
+    discovered_embeddings, discovered_ids,
+    model, tokenizer, layer_idx, h_target,
+    optimizer_cls, lr,
+    step = 0
+):
+    copy_embedding_matrix = embedding_matrix.clone().detach().requires_grad_(False)
+
+    token_id = torch.randint(0, embedding_matrix.size(0), (1,)).item()
+    
+    embedding = copy_embedding_matrix[token_id].clone().requires_grad_(True)
+    temp_embedding = copy_embedding_matrix[token_id].clone().detach()
+
+    optimizer = optimizer_cls([embedding], lr=lr)
+
+    bar = tqdm(
+        range(embedding_matrix.size(0)), 
+        desc=f'Token [{token_idx + 1:2d}/{h_target.size(0):2d}]'
+    )
+
+    for _ in bar:
+        step += 1
+        input_embeddings = torch.stack(
+            discovered_embeddings + [temp_embedding]
+        ).unsqueeze(0) 
+
+        grad_oracle, loss = compute_last_token_embedding_grad_emb(
+            embeddings=input_embeddings, 
+            model=model,
+            layer_idx=layer_idx,
+            h_target=h_target[token_idx],
+        )
+
+        grad_norm = grad_oracle.norm().item()
+        string_so_far = tokenizer.decode(discovered_ids + [token_id], skip_special_tokens=True)
+        bar.set_postfix_str(f"Loss: {loss:.2e} - Gradient norm: {grad_norm:.2e} - String: {string_so_far}")
+
+        if loss < 1e-5 or grad_norm < 1e-12:
+            break
+
+        embedding.grad = grad_oracle
+        optimizer.step()
+
+        copy_embedding_matrix[token_id] = float('inf')
+        distances = torch.norm(copy_embedding_matrix - embedding, dim=1)
+        token_id = int(torch.argmin(distances))
+        temp_embedding = copy_embedding_matrix[token_id].clone()
+
+    return token_id, copy_embedding_matrix[token_id], step
+
+
+# from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+def gd_sequential(
+    model, tokenizer, prompt, layer_idx,
+    optimizer_cls, lr,
+    seed=8
+):
+    """
+    Sequentially invert the prompt using a PyTorch optimizer.
+    Args:
+        model: The language model to use for inversion.
+        tokenizer: The tokenizer for the model.
+        prompt (str): The input prompt to invert.
+        layer_idx (int): The layer index to target for inversion.
+        optimizer_cls: The optimizer class to use (e.g., Adam).
+        lr (float): Learning rate for the optimizer.
+        seed (int): Random seed for reproducibility.
+    Returns:
+        tuple: (reconstructed_prompt, logs)
+    """
+    print(f"Starting inversion for prompt: {prompt}")
+    set_seed(seed)
+    h_target = extract_hidden_states_prompt(prompt, model, tokenizer, layer_idx)
+
+    embedding_matrix = model.get_input_embeddings().weight
+    input_ids = tokenizer(prompt, return_tensors='pt').input_ids
+    input_embeddings = model.get_input_embeddings()(input_ids)
+
+    if h_target.dim() == 1:
+        h_target = h_target.unsqueeze(0)
+
+    discovered_embeddings = []
+    discovered_ids        = []
+
+    start_time = time()
+    step = 0
+    logs = []
+    for i in range(h_target.size(0)):
+        next_token_id, next_token_embedding, step = find_token(
+            i, embedding_matrix,
+            discovered_embeddings, discovered_ids,
+            model, tokenizer, layer_idx, h_target,
+            optimizer_cls, lr,
+            step=step
+        )
+        discovered_embeddings.append(next_token_embedding)
+        discovered_ids.append(next_token_id)
+        discovered_embeddings_extended = torch.zeros_like(h_target)
+        discovered_embeddings_extended[:i+1] = torch.stack(discovered_embeddings)
+        m = compute_metrics(
+            [prompt], 
+            [input_embeddings.detach().numpy()],
+            [tokenizer.decode(discovered_ids, skip_special_tokens=True)],
+            [discovered_embeddings_extended.numpy()],
+        )
+        m['step'] = step
+        m['time'] = time() - start_time
+        logs.append({k: v for k, v in m.items()})
+
+    final_string = tokenizer.decode(discovered_ids, skip_special_tokens=True)
+    logs = consolidate_logs(logs)
+    return final_string, logs
+
+
+    

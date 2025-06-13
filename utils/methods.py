@@ -3,17 +3,57 @@ import torch
 from torch.optim import Adam
 from tqdm import tqdm
 
-from utils.general import extract_hidden_states_ids
+from utils.general import extract_hidden_states_ids, consolidate_logs, extract_hidden_states_prompt, set_seed
 from utils.metrics import compute_metrics
 
-def invert_whole_prompt(
-    prompt,
+
+def test_prompt_reconstruction(model, tokenizer, sentences, seed=8, **kwargs):
+    """
+    Test the reconstruction of prompts using the model's hidden states.
+    Args:
+        model: The language model to use for reconstruction.
+        tokenizer: The tokenizer corresponding to the language model.
+        dataset: A list of sentences to process.
+        seed: Random seed for reproducibility.
+    Returns:
+        A dictionary containing the computed metrics for each layer.
+    """
+    embedding_matrix = model.get_input_embeddings().weight
+    metrics = []
+    # average scores over the dataset
+    sentense_embeddings = []
+    for sentence in tqdm(sentences, desc="Computing sentence embeddings"):
+        set_seed(seed)
+        input_ids = tokenizer(sentence, return_tensors='pt').input_ids
+        with torch.no_grad():
+            embedding = model.get_input_embeddings()(input_ids)[0]
+            embedding = embedding.numpy()
+        sentense_embeddings.append(embedding)
+    
+    for layer_idx in range(model.config.num_hidden_layers):
+        output_sentences = []
+        output_embeddings = []
+        for prompt in tqdm(sentences, desc="Processing prompts"):
+            set_seed(seed)
+            h_target = extract_hidden_states_prompt(prompt, model, tokenizer,layer_idx=layer_idx)
+            output_tokens = (h_target @ embedding_matrix.T).argmax(dim=-1)
+            output_sentence = tokenizer.decode(output_tokens, skip_special_tokens=True)
+            output_sentences.append(output_sentence)
+            output_embeddings.append(embedding_matrix[output_tokens].detach().numpy())
+        metrics.append(compute_metrics(sentences, sentense_embeddings, output_sentences, output_embeddings))
+    merge_metrics = consolidate_logs(metrics)
+    return merge_metrics
+
+def gd_all_tokens(
     model,
     tokenizer,
+    prompt,
     layer_idx,
     n_iterations=2000,
     lr=0.1,
-    log_freq=100
+    log_freq=100,
+    seed = 8,
+    **kwargs
 ):
     """
     Invert the entire prompt using a PyTorch optimizer.
@@ -29,6 +69,7 @@ def invert_whole_prompt(
     Returns:
         tuple: (reconstructed_prompt, losses, times, steps, distances)
     """
+    set_seed(seed)
     embedding_matrix = model.get_input_embeddings().weight
     vocab_size, hidden_size = embedding_matrix.shape
 
@@ -42,7 +83,6 @@ def invert_whole_prompt(
         # Target hidden states should not track gradients
         h_target = model(input_ids, output_hidden_states=True).hidden_states[layer_idx]
 
-    
     random_ids = torch.randint(0, vocab_size, (1, input_ids.size(1)), device=device)
     # Clone and set requires_grad=True to make it a leaf tensor for optimization
     optimized_embeddings = embedding_matrix[random_ids].clone().detach().requires_grad_(True)
@@ -62,13 +102,7 @@ def invert_whole_prompt(
                 with torch.no_grad():
                     dist = torch.cdist(optimized_embeddings.squeeze(0), embedding_matrix)
                     projected_ids = torch.argmin(dist, dim=1)
-                    projected_embeddings = embedding_matrix[projected_ids]
                     output_sentence = tokenizer.decode(projected_ids.tolist(), skip_special_tokens=True)
-                    # print(f"input sentence: {input_sentence}")
-                    # print(f"output sentence: {output_sentence}")
-                    # print(f"input embeddings: {input_embeddings.squeeze(0).shape}")
-                    # print(f"output embeddings: {optimized_embeddings.squeeze(0).shape}")
-
                     m = compute_metrics(
                         [input_sentence],
                         [input_embeddings],
@@ -88,10 +122,63 @@ def invert_whole_prompt(
                 break
     
     reconstructed_prompt = tokenizer.decode(projected_ids.tolist(), skip_special_tokens=True)
-    merge_logs = {}
-    for log in logs:
-        for key, value in log.items():
-            if key not in merge_logs:
-                merge_logs[key] = []
-            merge_logs[key].append(value)
+    merge_logs = consolidate_logs(logs)
     return reconstructed_prompt, merge_logs
+
+
+def exhaustive_search(model, tokenizer, prompt, layer_idx=0, seed=42, eps=1e-3, **kwargs):
+    """
+    Exhaustively search for the best token at each position in the prompt
+    Args:
+        model: The language model to use for extraction.
+        tokenizer: The tokenizer for the model.
+        prompt (str): The input prompt to invert.
+        layer_idx (int): The layer index to target for inversion.
+        seed (int): Random seed for reproducibility.
+        eps (float): Tolerance for loss convergence.
+    Returns:
+        tuple: (output_sentence, logs)
+    """
+    set_seed(seed)
+    input_ids = tokenizer(prompt, return_tensors='pt').input_ids
+    embedding_matrix = model.get_input_embeddings().weight
+    h_target = extract_hidden_states_prompt(prompt, model, tokenizer, layer_idx=layer_idx)
+
+    output_tokens = []
+    time_start = time()
+    step = 0
+    logs = []
+    for i in range(input_ids.shape[1]):
+        min_loss = float('inf')
+        best_token = None
+        bar = tqdm(range(embedding_matrix.shape[0]), desc=f"Finding token {i+1}/{input_ids.shape[1]}")
+        # try each token in the vocabulary, compute the loss, pick the best one
+        for j in bar:
+            step += 1
+            current_tokens = output_tokens + [j]
+            current_tokens = torch.tensor(current_tokens).unsqueeze(0)
+            h = extract_hidden_states_ids(current_tokens, model, layer_idx)
+            loss = (h_target[i] - h[i]).norm()
+            if loss < min_loss:
+                min_loss = loss
+                best_token = j
+            bar.set_postfix({'loss': min_loss.item(), 'token': tokenizer.decode(best_token)})
+            if loss < eps:
+                break
+        output_tokens.append(best_token)
+        output_sentence = tokenizer.decode(output_tokens, skip_special_tokens=True)
+        output_embedding = torch.zeros_like(h_target)
+        output_embedding[:i+1] = embedding_matrix[output_tokens].detach()
+        m = compute_metrics(
+            [prompt], 
+            [embedding_matrix[input_ids].detach().numpy()],
+            [output_sentence],
+            [output_embedding.numpy()],
+        )
+        m['step'] = step 
+        m['time'] = time() - time_start 
+        logs.append({k: v for k, v in m.items()})
+
+    output_sentence = tokenizer.decode(output_tokens, skip_special_tokens=True)
+    logs = consolidate_logs(logs)
+    return output_sentence, logs

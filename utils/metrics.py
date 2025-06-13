@@ -35,10 +35,12 @@ def _agg_metric_over_time(metric_dict, metric_name, window_size=1):
     Returns:
         dict: Average and compute the std of all points smaller that each time point.
     """
-    assert 'time' in metric_dict, "Metrics must contain 'time' key for aggregation."
+    # {metric}_time should be in the metric_dict
+    time_name = f'{metric_name}_time'
+    assert time_name in metric_dict, f"Metrics must contain '{time_name}' key for aggregation of '{metric_name}'."
     assert metric_name in metric_dict, f"Metric '{metric_name}' not found in metric_dict."
 
-    times_metric = np.array(list(zip(metric_dict['time'].flatten(), metric_dict[metric_name].flatten())))
+    times_metric = np.array(list(zip(metric_dict[time_name].flatten(), metric_dict[metric_name].flatten())))
     sorted_indices = np.argsort(times_metric[:, 0])
     sorted_times_metric = times_metric[sorted_indices]
 
@@ -58,7 +60,7 @@ def _agg_metric_over_time(metric_dict, metric_name, window_size=1):
     return agg
 
 
-def compute_metrics(target_sentences, sentense_embeddings, output_sentences, output_embeddings, len_treshold=3,
+def compute_metrics(target_sentences, sentense_embeddings, output_sentences, output_embeddings, len_treshold=2,
     rouge = Rouge(),
     bert_scorer = BERTScorer(lang='en', rescale_with_baseline=True),
 ):

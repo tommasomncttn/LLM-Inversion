@@ -92,7 +92,7 @@ def plot_metrics_over_time(
         rename (dict): Optional dictionary to rename labels of metrics.
     """
     agg_metrics = {}
-    for metric in set(metrics.keys()) - {'time'}:
+    for metric in [k for k in metrics if 'time' not in k]:
         agg_metrics[metric] = _agg_metric_over_time(metrics, metric, window_size=window_size)
     
     fig, ax = plt.subplots(figsize=figsize)

@@ -2,9 +2,66 @@ import random
 import numpy as np
 import torch
 import torch.nn.functional as F
-
+from datasets import load_dataset
 import torch
 from typing import Optional, Tuple
+
+
+def load_sentences(dataset="bookcorpus", N=100, split="train", seed=42) -> list:
+    set_seed(seed)
+    dataset = load_dataset(dataset, split=split)
+    sentences = dataset.shuffle(seed=seed).select(range(N))['text']
+    return sentences
+
+
+def run_experiment(func, sentences, K, model, tokenizer, **kwargs):
+    results = []
+    for i, prompt in enumerate(sentences):
+        if i >= K:
+            break
+        results.append(func(model, tokenizer, prompt, **kwargs))
+    return results
+    
+
+def load_or_run(path, fn, *args, **kwargs):
+    import os, pickle
+    if not os.path.exists(os.path.dirname(path)): 
+        os.makedirs(os.path.dirname(path))
+    if os.path.exists(path) and not kwargs.get('force', False):
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    result = fn(*args, **kwargs)
+    with open(path, 'wb') as f:
+        pickle.dump(result, f)
+    return result
+
+
+# if not os.path.exists(RESULTS_PATH):
+#     os.makedirs(RESULTS_PATH)
+# if os.path.exists(path):
+#     with open(path, 'rb') as f:
+#         ex2_results = pickle.load(f)
+# else:
+#     ex2_results = []
+#     for i, prompt in enumerate(sentences):
+#         if i > K:
+#             break
+#         ex2_result = exhaustive_search(model, tokenizer, prompt, layer_idx=8, seed=8)
+#         ex2_results.append(ex2_result)
+#     with open(path, 'wb') as f:
+#         pickle.dump(ex2_results, f)
+# use util function to load the results
+
+
+def consolidate_logs(logs):
+    merge_logs = {}
+    for log in logs:
+        for key, value in log.items():
+            if key not in merge_logs:
+                merge_logs[key] = []
+            merge_logs[key].append(value)
+    return merge_logs
+
 
 def extract_hidden_states_prompt(
     prompt: str,

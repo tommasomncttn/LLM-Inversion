@@ -1,3 +1,0 @@
-python experiments/top_experiments.py -i data/random_sentences_dataset.csv -o results/random.csv > ./experiments/log_random.txt
-
-python experiments/top_experiments.py -i data/token_length_filtered_dataset.csv -o results/meaningful.csv > ./experiments/log_meaningful.txt

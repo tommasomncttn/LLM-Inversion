@@ -34,8 +34,8 @@ Execute all notebooks located in the `./notebooks` directory sequentially:
 1. Open each notebook
 2. Click **"Run All"**
 
-[!WARNING]
-Full execution may take **several days** depending on your hardware. For quicker inspection, we recommend running on reduced prompt lengths or fewer test cases.
+> [!WARNING]
+> Full execution may take **several days** depending on your hardware. For quicker inspection, we recommend running on reduced prompt lengths or fewer test cases.
 
 ---
 

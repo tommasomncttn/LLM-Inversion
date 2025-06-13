@@ -3,6 +3,8 @@ os.environ['TOKENIZERS_PARALLELISM'] = 'false'
 
 import sys
 sys.path.append(os.getcwd())
+sys.path.append('.')
+sys.path.append('..')
 
 from pathlib import Path
 import argparse

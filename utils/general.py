@@ -46,6 +46,18 @@ def consolidate_logs(logs):
     return merge_logs
 
 
+def collect_and_pad_results(results):
+    keys = list(results[0][1].keys())
+    results_collected = {
+        key: [x[1][key] for x in results] for key in keys
+    }
+    max_length = max(len(x) for x in results_collected[keys[0]])
+    for key in results_collected:
+        results_collected[key] = [x + [np.nan] * (max_length - len(x)) for x in results_collected[key]]
+        results_collected[key] = np.array(results_collected[key]).T
+    return results_collected
+
+
 def extract_hidden_states_prompt(
     prompt: str,
     model: torch.nn.Module,

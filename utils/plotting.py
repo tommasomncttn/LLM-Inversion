@@ -83,6 +83,7 @@ def plot_metrics_over_time(
     title='Metrics over Time',
     figsize=(10, 6),
     window_size=None,
+    color=None,
 ):
     """
     Plot average metric before and after each time.
@@ -100,8 +101,8 @@ def plot_metrics_over_time(
         times, means, stds = zip(*values)
         if fill_between:
             ax.fill_between(times, [m - s for m, s in zip(means, stds)], [m + s for m, s in zip(means, stds)], 
-                            alpha=0.2, color=COLORS[i % len(COLORS)])
-        ax.plot(times, means, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)], marker='o')
+                            alpha=0.2, color=COLORS[i % len(COLORS)] if not color else color)
+        ax.plot(times, means, label=_rename(metric_name, rename), color=COLORS[i % len(COLORS)] if not color else color, marker='o')
     ax.set_xlabel(xlabel, fontsize=14)
     ax.set_ylabel(ylabel, fontsize=14)
     ax.set_title(title, fontsize=16)

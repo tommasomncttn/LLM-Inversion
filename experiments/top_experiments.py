@@ -139,7 +139,7 @@ def find_token(
         else:
             grad_oracle, loss = compute_last_token_embedding_grad_emb(
                 embeddings=input_embeddings, 
-                llm=llm,
+                model=llm,
                 layer_idx=layer_idx,
                 h_target=h_target[token_idx],
             )

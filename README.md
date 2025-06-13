@@ -42,7 +42,7 @@ Execute all notebooks located in the `./notebooks` directory sequentially:
 ## Notebooks Structure
 
 - `0.0-dataset.ipynb` – Creation of `meaningful` and `random` datasets
-- `1.1-.ipynb` – 
+- `1.1-Baseline-comparison.ipynb` – Contains experiments connected to Benchmarking SIP-It against other methods
 - `1.2-SIP-It-experiments.ipynb` – Execution of SIP-It algorithm for different parameters and data
 - `2.1-SIP-It-plots.ipynb` – Creates the plots used in the report
 

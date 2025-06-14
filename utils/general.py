@@ -10,7 +10,7 @@ from typing import Optional, Tuple
 def load_sentences(dataset="bookcorpus", N=100, split="train", seed=42) -> list:
     set_seed(seed)
     dataset = load_dataset(dataset, split=split)
-    sentences = dataset.shuffle(seed=seed).select(range(N))['text']
+    sentences = dataset.shuffle(seed=seed).select(range(N))["text"]
     return sentences
 
 
@@ -21,17 +21,18 @@ def run_experiment(func, sentences, K, model, tokenizer, **kwargs):
             break
         results.append(func(model, tokenizer, prompt, **kwargs))
     return results
-    
+
 
 def load_or_run(path, fn, *args, **kwargs):
     import os, pickle
-    if not os.path.exists(os.path.dirname(path)): 
+
+    if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
-    if os.path.exists(path) and not kwargs.get('force', False):
-        with open(path, 'rb') as f:
+    if os.path.exists(path) and not kwargs.get("force", False):
+        with open(path, "rb") as f:
             return pickle.load(f)
     result = fn(*args, **kwargs)
-    with open(path, 'wb') as f:
+    with open(path, "wb") as f:
         pickle.dump(result, f)
     return result
 
@@ -48,12 +49,12 @@ def consolidate_logs(logs):
 
 def collect_and_pad_results(results):
     keys = list(results[0][1].keys())
-    results_collected = {
-        key: [x[1][key] for x in results] for key in keys
-    }
+    results_collected = {key: [x[1][key] for x in results] for key in keys}
     max_length = max(len(x) for x in results_collected[keys[0]])
     for key in results_collected:
-        results_collected[key] = [x + [np.nan] * (max_length - len(x)) for x in results_collected[key]]
+        results_collected[key] = [
+            x + [np.nan] * (max_length - len(x)) for x in results_collected[key]
+        ]
         results_collected[key] = np.array(results_collected[key]).T
     return results_collected
 
@@ -81,19 +82,17 @@ def extract_hidden_states_prompt(
     device = next(model.parameters()).device
     # if input_ids is None:
     encoded = tokenizer(prompt, return_tensors="pt")
-    input_ids = encoded["input_ids"].to(device)      # shape (1, seq_len)
+    input_ids = encoded["input_ids"].to(device)  # shape (1, seq_len)
     return extract_hidden_states_ids(
-        input_ids=input_ids,
-        model=model,
-        layer_idx=layer_idx,
-        grad=grad
+        input_ids=input_ids, model=model, layer_idx=layer_idx, grad=grad
     )
+
 
 def extract_hidden_states_ids(
     input_ids: torch.LongTensor,
     model: torch.nn.Module,
     layer_idx: int,
-    grad: bool = False
+    grad: bool = False,
 ) -> torch.Tensor:
     """
     Extract hidden states for the last token in a sequence of input IDs.
@@ -108,20 +107,14 @@ def extract_hidden_states_ids(
     if not grad:
         # Forward under no_grad and detach before returning
         with torch.no_grad():
-            outputs = model(
-                input_ids=input_ids,
-                output_hidden_states=True
-            )
+            outputs = model(input_ids=input_ids, output_hidden_states=True)
             hidden_states = outputs.hidden_states
             h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
 
         return h.detach()
     else:
         # Forward normally, so gradients can flow
-        outputs = model(
-            input_ids=input_ids,
-            output_hidden_states=True
-        )
+        outputs = model(input_ids=input_ids, output_hidden_states=True)
         hidden_states = outputs.hidden_states
         h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
         return h
@@ -146,22 +139,22 @@ def compute_last_token_embedding_grad(
 
     with torch.set_grad_enabled(True):
         h_last = extract_hidden_states_ids(
-            input_ids=y.unsqueeze(0),
-            model=model,
-            layer_idx=layer_idx,
-            grad=True
+            input_ids=y.unsqueeze(0), model=model, layer_idx=layer_idx, grad=True
         )[-1]
         diff = h_last - h_target
         loss = torch.dot(diff, diff)
         loss.backward()
 
     last_token_id = y[-1].item()
-    grad_last_embedding = emb_layer.weight.grad[last_token_id].detach().clone() # TODO: Is this gradient with respect to the input or not?
+    grad_last_embedding = (
+        emb_layer.weight.grad[last_token_id].detach().clone()
+    )  # TODO: Is this gradient with respect to the input or not?
 
     model.zero_grad()
     emb_layer.zero_grad()
 
     return grad_last_embedding, loss.item()
+
 
 def compute_all_token_embeddings_grad(
     y: torch.LongTensor,
@@ -197,17 +190,16 @@ def compute_all_token_embeddings_grad(
 
     with torch.set_grad_enabled(True):
         h_all = extract_hidden_states_ids(
-            input_ids=y.unsqueeze(0),
-            model=model,
-            layer_idx=layer_idx,
-            grad=True
+            input_ids=y.unsqueeze(0), model=model, layer_idx=layer_idx, grad=True
         )
         diff = h_all - h_target
-        loss = torch.einsum('ij,ij->', diff, diff)  # sum over seq_len
+        loss = torch.einsum("ij,ij->", diff, diff)  # sum over seq_len
         loss.backward()
 
     # Extract gradients for the sequence tokens only
-    grad_sequence = emb_layer.weight.grad[y].detach().clone()  # shape ([seq_len, hidden_size])
+    grad_sequence = (
+        emb_layer.weight.grad[y].detach().clone()
+    )  # shape ([seq_len, hidden_size])
 
     model.zero_grad()
     emb_layer.zero_grad()
@@ -216,10 +208,7 @@ def compute_all_token_embeddings_grad(
 
 
 def extract_hidden_states(
-    embeddings: torch.Tensor,
-    model: torch.nn.Module,
-    layer_idx: int,
-    grad: bool = False
+    embeddings: torch.Tensor, model: torch.nn.Module, layer_idx: int, grad: bool = False
 ) -> torch.Tensor:
     """
     Tokenize `prompt`, do a forward pass with output_hidden_states=True,
@@ -238,23 +227,18 @@ def extract_hidden_states(
     if not grad:
         # Forward under no_grad and detach before returning
         with torch.no_grad():
-            outputs = model(
-                inputs_embeds=embeddings,
-                output_hidden_states=True
-            )
+            outputs = model(inputs_embeds=embeddings, output_hidden_states=True)
             hidden_states = outputs.hidden_states
             h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
 
         return h.detach()
     else:
         # Forward normally, so gradients can flow
-        outputs = model(
-            inputs_embeds=embeddings,
-            output_hidden_states=True
-        )
+        outputs = model(inputs_embeds=embeddings, output_hidden_states=True)
         hidden_states = outputs.hidden_states
         h = hidden_states[layer_idx][0]  # shape = (seq_len, hidden_size)
         return h
+
 
 def compute_last_token_embedding_grad_emb(
     embeddings: torch.Tensor,
@@ -292,18 +276,15 @@ def compute_last_token_embedding_grad_emb(
     inputs_embeds = torch.cat([fixed_embs[:, :-1, :], last_emb], dim=1)
 
     # Forward pass from custom embeddings
-    outputs = model(
-        inputs_embeds=inputs_embeds,
-        output_hidden_states=True
-    )
+    outputs = model(inputs_embeds=inputs_embeds, output_hidden_states=True)
     hidden_states = outputs.hidden_states
     h_last = hidden_states[layer_idx][0, -1, :]
 
     # Compute MSE loss for last token
-    loss = torch.nn.functional.mse_loss(h_last, h_target, reduction='sum')
+    loss = torch.nn.functional.mse_loss(h_last, h_target, reduction="sum")
 
     # Compute gradient only w.r.t. last_emb
-    
+
     loss.backward()
     return last_emb.grad.squeeze(0, 1), loss
 
@@ -326,14 +307,16 @@ def set_seed(seed: int = 8):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
+
 import sys
 import importlib
 import os
 from os.path import splitext, basename, dirname, isfile
 
+
 def load_module(module_reference, name):
     # Check if it's a file path to a .py file
-    if isfile(module_reference) and module_reference.endswith('.py'):
+    if isfile(module_reference) and module_reference.endswith(".py"):
         mod_name = splitext(basename(module_reference))[0]
         mod_path = dirname(os.path.abspath(module_reference))
         sys.path.insert(0, mod_path)
@@ -343,6 +326,7 @@ def load_module(module_reference, name):
         module = importlib.import_module(module_reference)
 
     return getattr(module, name)
+
 
 def load_model(src, cls, args=None):
     model = load_module(src, cls)
